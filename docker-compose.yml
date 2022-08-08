@@ -1,0 +1,49 @@
+version: "3"
+services:
+  mariadb:
+    image: mariadb:10.5.8
+    container_name: sql-database
+    restart: always
+    environment:
+      - MYSQL_DATABASE=test
+      - MYSQL_USER=test
+      - MYSQL_PASSWORD=test
+      - MYSQL_ALLOW_EMPTY_PASSWORD=true
+    volumes:
+      - /var/lib/mysql
+    ports:
+      - 3306:3306
+
+  backend:
+    image: node:12
+    restart: always
+    ports:
+      - 8081:8081
+    volumes:
+      - ./backend:/var/app
+    environment:
+      - DB_URI=mongodb://mongodb:27017
+    command:
+      - /bin/bash
+      - -c
+      - |
+        cd var/app
+        yarn start
+    depends_on:
+      - mariadb
+
+  frontend:
+    image: node:12
+    restart: always
+    ports:
+      - 3000:3000
+    volumes:
+      - ./frontend:/var/app
+    command:
+      - /bin/bash
+      - -c
+      - |
+        cd /var/app
+        npm start
+    depends_on:
+      - backend

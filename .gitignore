@@ -1,0 +1,11 @@
+node_modules
+.DS_Store
+.env
+db
+upload
+.github/workflows/edge_test.yml
+.scannerwork/
+sonar-project.properties
+/frontend/output/
+translate_old.json
+.history
