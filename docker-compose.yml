@@ -5,7 +5,7 @@ services:
     container_name: sql-database
     restart: always
     environment:
-      - MYSQL_DATABASE=test
+      - MYSQL_DB=test
       - MYSQL_USER=test
       - MYSQL_PASSWORD=test
       - MYSQL_ALLOW_EMPTY_PASSWORD=true
@@ -22,12 +22,13 @@ services:
     volumes:
       - ./backend:/var/app
     environment:
-      - DB_URI=mongodb://mongodb:27017
+      - NODE_ENV=development
     command:
       - /bin/bash
       - -c
       - |
         cd var/app
+        yarn run migrate:latest
         yarn start
     depends_on:
       - mariadb

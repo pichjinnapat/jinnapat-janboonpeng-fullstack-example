@@ -2,19 +2,32 @@ import express from "express";
 
 import routes from "./routes";
 import cors from "cors";
+import { dbConnect } from "./database";
 
+const NODE_ENV = process.env.NODE_ENV;
+
+const corsOptions = {
+  methods: ["GET", "POST", "DELETE", "UPDATE"],
+};
 const app = express();
 
-// Parse JSON
 app.use(express.json());
 
-// Use CORS
-app.use(cors());
+app.use(
+  cors(
+    NODE_ENV === "development"
+      ? {
+          ...corsOptions,
+          origin: ["http://localhost:3000"],
+        }
+      : {
+          ...corsOptions,
+        }
+  )
+);
 
-// // Create connection with database
-// connectDB();
+dbConnect();
 
-// Fetching API from the routes
 app.use(routes);
 
 export default app;
