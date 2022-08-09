@@ -21,7 +21,7 @@ export const useCalculator = () => {
 
       setValue({
         num: "0",
-        result: String(result.toFixed(6)),
+        result: String(roundNumber(result)),
       });
     }
   };
@@ -50,6 +50,14 @@ export const useCalculator = () => {
     setOpr("");
   };
 
+  const roundNumber = (numberStr: number) => {
+    const result = String(numberStr);
+
+    return result.length > MAX_DIGITS
+      ? String(Number(result).toFixed(6))
+      : result;
+  };
+
   const setOperator = (operatorBtn: string) => {
     setOpr(operatorBtn);
 
@@ -58,25 +66,25 @@ export const useCalculator = () => {
         case "+":
           setValue((curr) => ({
             num: "0",
-            result: String((Number(curr.result) + Number(curr.num)).toFixed(6)),
+            result: roundNumber(Number(curr.result) + Number(curr.num)),
           }));
           break;
         case "-":
           setValue((curr) => ({
             num: "0",
-            result: String((Number(curr.result) - Number(curr.num)).toFixed(6)),
+            result: roundNumber(Number(curr.result) - Number(curr.num)),
           }));
           break;
         case "×":
           setValue((curr) => ({
             num: "0",
-            result: String((Number(curr.result) * Number(curr.num)).toFixed(6)),
+            result: roundNumber(Number(curr.result) * Number(curr.num)),
           }));
           break;
         case "÷":
           setValue((curr) => ({
             num: "0",
-            result: String((Number(curr.result) / Number(curr.num)).toFixed(6)),
+            result: roundNumber(Number(curr.result) / Number(curr.num)),
           }));
           break;
         default:
