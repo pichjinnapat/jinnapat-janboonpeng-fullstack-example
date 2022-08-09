@@ -13,5 +13,3 @@ export const dbConnect = () => {
       throw new Error(`🫙 Cannot get a db connection 🚫 : ${err}`);
     });
 };
-
-export const executeQuery = () => {};

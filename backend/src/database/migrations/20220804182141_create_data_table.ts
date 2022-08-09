@@ -5,11 +5,17 @@ export async function up(knex: Knex): Promise<void> {
   const { TABLE_NAME, COLUMN_NAMES } = EVENT_TABLE;
   return knex.schema.createTable(TABLE_NAME, (table) => {
     table.bigIncrements(COLUMN_NAMES.ID).notNullable().unique();
-    table.integer(COLUMN_NAMES.OWNER_ID).notNullable();
+    table.text(COLUMN_NAMES.OWNER).notNullable();
     table.text(COLUMN_NAMES.TITLE).notNullable();
     table.text(COLUMN_NAMES.MESSAGE).notNullable();
-    table.timestamp(COLUMN_NAMES.CREATION_TIME).notNullable();
-    table.timestamp(COLUMN_NAMES.UPDATE_TIME).notNullable();
+    table
+      .timestamp(COLUMN_NAMES.CREATION_TIME)
+      .notNullable()
+      .defaultTo(knex.raw("CURRENT_TIMESTAMP"));
+    table
+      .timestamp(COLUMN_NAMES.UPDATE_TIME)
+      .notNullable()
+      .defaultTo(knex.raw("CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"));
   });
 }
 
