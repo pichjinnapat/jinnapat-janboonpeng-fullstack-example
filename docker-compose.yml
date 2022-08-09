@@ -1,18 +1,17 @@
 version: "3"
 services:
-  mariadb:
-    image: mariadb:10.5.8
-    container_name: sql-database
+  postgresdb:
+    image: postgres
+    container_name: postgres-database
     restart: always
     environment:
-      - MYSQL_DB=test
-      - MYSQL_USER=test
-      - MYSQL_PASSWORD=test
-      - MYSQL_ALLOW_EMPTY_PASSWORD=true
+      - POSTGRES_USER=test
+      - POSTGRES_PASSWORD=test
+      - POSTGRES_DB=test
     volumes:
-      - /var/lib/mysql
+      - /var/lib/pgsql
     ports:
-      - 3306:3306
+      - 5432:5432
 
   backend:
     image: node:12
@@ -31,7 +30,7 @@ services:
         yarn run migrate:latest
         yarn start
     depends_on:
-      - mariadb
+      - postgresdb
 
   frontend:
     image: node:12

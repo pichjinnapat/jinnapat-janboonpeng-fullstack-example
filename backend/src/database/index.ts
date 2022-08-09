@@ -1,4 +1,3 @@
-import mysql from "mysql";
 import dotenv from "dotenv";
 import knex from "knex";
 import knexConfig from "../knexfile";

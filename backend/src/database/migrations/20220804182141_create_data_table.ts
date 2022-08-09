@@ -12,10 +12,6 @@ export async function up(knex: Knex): Promise<void> {
       .timestamp(COLUMN_NAMES.CREATION_TIME)
       .notNullable()
       .defaultTo(knex.raw("CURRENT_TIMESTAMP"));
-    table
-      .timestamp(COLUMN_NAMES.UPDATE_TIME)
-      .notNullable()
-      .defaultTo(knex.raw("CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"));
   });
 }
 

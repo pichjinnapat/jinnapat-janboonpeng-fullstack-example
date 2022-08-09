@@ -61,10 +61,13 @@ const addEvent = async (req: Request, res: Response, next: NextFunction) => {
   const event: Omit<EventType, "id"> = req.body;
 
   try {
-    const response = await db(EVENT_TABLE.TABLE_NAME).insert(event);
+    const response = await db(EVENT_TABLE.TABLE_NAME)
+      .insert(event)
+      .returning<{ id: string }[]>(EVENT_TABLE.COLUMN_NAMES.ID);
+
     return responseHandler(
       res,
-      `Added event number ${response[0]} successfully`
+      `Added event id ${JSON.stringify(response[0].id)} successfully`
     );
   } catch (error) {
     next(error);
@@ -75,16 +78,17 @@ const updateEvent = async (req: Request, res: Response, next: NextFunction) => {
   const { eventId } = req.params;
   const updateEvent: Partial<EventType> = req.body;
 
-  console.log("req", req);
   try {
     const response = await db(EVENT_TABLE.TABLE_NAME)
       .update(updateEvent)
-      .where(EVENT_TABLE.COLUMN_NAMES.ID, Number(eventId));
+      .where(EVENT_TABLE.COLUMN_NAMES.ID, Number(eventId))
+      .returning<{ id: string }[]>(EVENT_TABLE.COLUMN_NAMES.ID);
 
-    console.log("response", response);
-
-    if (response >= 1)
-      return responseHandler(res, `Updated event id ${eventId} successfully`);
+    if (response.length >= 1 && response[0].id === eventId)
+      return responseHandler(
+        res,
+        `Updated event id ${response[0].id} successfully`
+      );
     else next("No event updated");
   } catch (error) {
     next(error);
@@ -96,10 +100,14 @@ const deleteEvent = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const response = await db(EVENT_TABLE.TABLE_NAME)
       .where(EVENT_TABLE.COLUMN_NAMES.ID, eventId)
-      .del();
+      .del()
+      .returning<{ id: string }[]>(EVENT_TABLE.COLUMN_NAMES.ID);
 
-    if (response >= 1)
-      return responseHandler(res, `Deleted event id ${eventId} successfully`);
+    if (response.length >= 1 && response[0].id === eventId)
+      return responseHandler(
+        res,
+        `Deleted event id ${response[0].id} successfully`
+      );
     else next("No event deleted");
   } catch (error) {
     next(error);
