@@ -21,7 +21,7 @@ export const useCalculator = () => {
 
       setValue({
         num: "0",
-        result: String(result),
+        result: String(result.toFixed(6)),
       });
     }
   };
@@ -58,25 +58,25 @@ export const useCalculator = () => {
         case "+":
           setValue((curr) => ({
             num: "0",
-            result: String(Number(curr.result) + Number(curr.num)),
+            result: String((Number(curr.result) + Number(curr.num)).toFixed(6)),
           }));
           break;
         case "-":
           setValue((curr) => ({
             num: "0",
-            result: String(Number(curr.result) - Number(curr.num)),
+            result: String((Number(curr.result) - Number(curr.num)).toFixed(6)),
           }));
           break;
         case "×":
           setValue((curr) => ({
             num: "0",
-            result: String(Number(curr.result) * Number(curr.num)),
+            result: String((Number(curr.result) * Number(curr.num)).toFixed(6)),
           }));
           break;
         case "÷":
           setValue((curr) => ({
             num: "0",
-            result: String(Number(curr.result) / Number(curr.num)),
+            result: String((Number(curr.result) / Number(curr.num)).toFixed(6)),
           }));
           break;
         default:

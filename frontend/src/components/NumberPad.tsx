@@ -8,15 +8,27 @@ type NumberPadProps = {
 type NumButton = {
   label: string;
   length?: 2 | 3 | 4;
+  isHighlighted?: boolean;
 };
 
 const NumberPad: FC<NumberPadProps> = (props) => {
-  const btnNum: NumButton[][] = [
-    [{ label: "AC", length: 3 }, { label: "÷" }],
-    [{ label: "1" }, { label: "2" }, { label: "3" }, { label: "×" }],
-    [{ label: "4" }, { label: "5" }, { label: "6" }, { label: "-" }],
-    [{ label: "7" }, { label: "8" }, { label: "9" }, { label: "+" }],
-    [{ label: "0" }, { label: "=", length: 3 }],
+  const btnNum: NumButton[] = [
+    { label: "AC", length: 3 },
+    { label: "÷", isHighlighted: true },
+    { label: "1" },
+    { label: "2" },
+    { label: "3" },
+    { label: "×", isHighlighted: true },
+    { label: "4" },
+    { label: "5" },
+    { label: "6" },
+    { label: "-", isHighlighted: true },
+    { label: "7" },
+    { label: "8" },
+    { label: "9" },
+    { label: "+", isHighlighted: true },
+    { label: "0" },
+    { label: "=", length: 3, isHighlighted: true },
   ];
 
   const handleClick = (
@@ -27,7 +39,7 @@ const NumberPad: FC<NumberPadProps> = (props) => {
 
   return (
     <div className="grid grid-cols-4 gap-1 xs:gap-2">
-      {btnNum.flat().map((btn) => {
+      {btnNum.map((btn) => {
         switch (btn.length) {
           case 2:
             return (
@@ -36,6 +48,7 @@ const NumberPad: FC<NumberPadProps> = (props) => {
                   isSquare={false}
                   onClick={handleClick}
                   value={btn.label}
+                  isHighlighted={btn.isHighlighted}
                 >
                   {btn.label}
                 </Button>
@@ -48,6 +61,7 @@ const NumberPad: FC<NumberPadProps> = (props) => {
                   isSquare={false}
                   onClick={handleClick}
                   value={btn.label}
+                  isHighlighted={btn.isHighlighted}
                 >
                   {btn.label}
                 </Button>
@@ -60,6 +74,7 @@ const NumberPad: FC<NumberPadProps> = (props) => {
                   isSquare={false}
                   onClick={handleClick}
                   value={btn.label}
+                  isHighlighted={btn.isHighlighted}
                 >
                   {btn.label}
                 </Button>
@@ -67,7 +82,12 @@ const NumberPad: FC<NumberPadProps> = (props) => {
             );
           default:
             return (
-              <Button key={btn.label} onClick={handleClick} value={btn.label}>
+              <Button
+                key={btn.label}
+                onClick={handleClick}
+                value={btn.label}
+                isHighlighted={btn.isHighlighted}
+              >
                 {btn.label}
               </Button>
             );
